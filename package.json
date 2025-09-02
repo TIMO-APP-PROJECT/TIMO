@@ -1,0 +1,33 @@
+{
+  "name": "timo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "mobile": "npm run dev --workspace=@timo/mobile",
+    "web": "npm run dev --workspace=@timo/web",
+    "storybook": "npm run storybook --workspace=@timo/ui"
+  },
+  "devDependencies": {
+    "@storybook/nextjs": "^8.6.14",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
+    "turbo": "^1.10.12",
+    "typescript": "^5.2.2"
+  },
+  "packageManager": "npm@10.8.1",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
