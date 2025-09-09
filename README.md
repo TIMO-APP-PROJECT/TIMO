@@ -1,147 +1,120 @@
-# TIMO
+# TIMO Web
 
-iOS 앱과 웹을 함께 개발하는 모노레포 프로젝트입니다.
+TIMO 프로젝트의 웹 애플리케이션입니다.
+
+## 기술 스택
+
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Testing**: Jest + Testing Library
+- **Storybook**: UI 컴포넌트 문서화
+
+## 시작하기
+
+### 필수 요구사항
+
+- Node.js 20 이상
+- npm 10.8.1
+
+### 설치 및 실행
+
+```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 시작
+npm run dev
+
+# 빌드
+npm run build
+
+# 프로덕션 서버 시작
+npm run start
+```
+
+### 개발 도구
+
+```bash
+# 린팅
+npm run lint
+
+# 타입 체크
+npm run type-check
+
+# 테스트 실행
+npm run test
+
+# 테스트 watch 모드
+npm run test:watch
+
+# 커버리지 포함 테스트
+npm run test:coverage
+
+# 코드 포맷팅
+npm run format
+
+# 프로젝트 정리
+npm run clean
+```
 
 ## 프로젝트 구조
 
 ```
-TIMO/
-├── apps/
-│   ├── mobile/          # React Native Expo 앱 (iOS 전용)
-│   └── web/             # Next.js 웹 애플리케이션
-├── packages/
-│   ├── shared/          # 공유 로직 및 상태관리
-│   └── ui/              # 공유 UI 컴포넌트
-└── tools/               # 개발 도구 및 설정
+├── src/
+│   ├── app/                 # Next.js App Router
+│   │   ├── layout.tsx       # 루트 레이아웃
+│   │   ├── page.tsx         # 홈 페이지
+│   │   └── globals.css      # 글로벌 스타일
+│   └── components/          # 재사용 가능한 컴포넌트
+│       ├── Button.tsx
+│       └── Button.test.tsx
+├── public/                  # 정적 파일들
+├── jest.config.ts           # Jest 설정
+├── next.config.mjs          # Next.js 설정
+├── tailwind.config.ts       # Tailwind CSS 설정
+└── tsconfig.json           # TypeScript 설정
 ```
 
-## 기술 스택
+## 스크립트 설명
 
-### 모바일 앱 (iOS)
+- `dev`: 개발 서버 실행 (http://localhost:3000)
+- `build`: 프로덕션 빌드
+- `start`: 프로덕션 서버 실행
+- `lint`: ESLint로 코드 검사
+- `type-check`: TypeScript 타입 체크
+- `test`: Jest 테스트 실행
+- `format`: Prettier로 코드 포맷팅
+- `clean`: 빌드 파일 및 node_modules 정리
 
-- React Native
-- Expo
-- TypeScript
-- WebView (react-native-webview)
+## 환경 설정
 
-### 웹 애플리케이션
-
-- Next.js 15
-- TypeScript
-- Tailwind CSS
-- Storybook
-
-### 공유
-
-- Zustand (전역 상태관리)
-- ESLint & Prettier
-- Turbo (모노레포 빌드 시스템)
-
-## 개발 환경 요구사항
-
-- Node.js 20+
-- npm 10+
-
-## 설치 및 실행
-
-### 1. 의존성 설치
+Node.js 버전 관리를 위해 `.nvmrc` 파일을 사용합니다:
 
 ```bash
-npm install
+nvm use
 ```
-
-### 2. 개발 서버 실행
-
-#### 모바일 앱 (iOS)
-
-```bash
-npm run mobile
-```
-
-시뮬레이터에서 새로고침:
-
-- CMD + R: 수동 새로고침
-- CMD + D: 개발자 메뉴 열기
-
-자동 새로고침이 동작하지 않을 경우:
-
-1. CMD + D로 개발자 메뉴 열기
-2. "Enable Fast Refresh" 활성화
-
-#### 모바일 기기에서 Expo Go로 실행
-
-1. Expo Go 앱 설치
-   - iOS: App Store에서 'Expo Go' 설치
-   - Android: Play Store에서 'Expo Go' 설치
-
-2. 개발 서버 실행
-
-3. QR 코드 스캔 혹은 폰에서 주소지 이동
-
-#### 웹 애플리케이션
-
-```bash
-npm run web
-```
-
-#### Storybook
-
-```bash
-npm run storybook
-```
-
-### 3. 빌드
-
-```bash
-npm run build
-```
-
-### 4. 린팅 및 포맷팅
-
-```bash
-npm run lint
-npm run format
-```
-
-## 워크스페이스
-
-이 프로젝트는 npm workspaces를 사용하여 모노레포로 구성되어 있습니다.
-
-- `@timo/mobile`: React Native Expo 앱
-- `@timo/web`: Next.js 웹 앱
-- `@timo/shared`: 공유 로직 및 타입
-- `@timo/ui`: 공유 UI 컴포넌트
-
-## 개발 가이드
-
-### 새로운 컴포넌트 추가
-
-1. `packages/ui/src/components/`에 컴포넌트 생성
-2. `packages/ui/src/components/index.ts`에 export 추가
-3. Storybook 스토리 작성 (선택사항)
-
-### 상태 관리
-
-- 전역 상태는 `packages/shared/src/stores/`에서 Zustand로 관리
-- 앱과 웹에서 동일한 상태 로직 공유
-
-### 스타일링
-
-- 웹: Tailwind CSS 클래스 사용
-- 모바일: React Native StyleSheet (필요시 NativeWind 고려)
 
 ## 배포
 
-### iOS 앱
+이 프로젝트는 Vercel, Netlify 등의 플랫폼에 쉽게 배포할 수 있습니다.
+
+### Vercel 배포
 
 ```bash
-cd apps/mobile
-npm run build:ios
+npm install -g vercel
+vercel
 ```
 
-### 웹 앱
+## 기여하기
 
-```bash
-cd apps/web
-npm run build
-```
+1. 이 저장소를 포크합니다
+2. 기능 브랜치를 생성합니다 (`git checkout -b feature/amazing-feature`)
+3. 변경사항을 커밋합니다 (`git commit -m 'Add some amazing feature'`)
+4. 브랜치에 푸시합니다 (`git push origin feature/amazing-feature`)
+5. Pull Request를 생성합니다
+
+## 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 있습니다.
