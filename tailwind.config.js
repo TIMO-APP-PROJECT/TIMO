@@ -7,11 +7,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      maxWidth: { app: '393px', tablet: '480px' },
+      screens: { tab: '768px' },
+      container: { center: true, padding: '16px' },
       fontFamily: {
         sans: ['var(--font-inter-sans)'],
         mono: ['var(--font-jetbrains-mono)'],
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss'), require('autoprefixer')],
 };
