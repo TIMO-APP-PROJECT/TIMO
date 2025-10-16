@@ -8,6 +8,9 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: { app: '393px', tablet: '480px' },
+      height: {
+        17: '4.125rem', // 66px
+      },
       screens: { tab: '768px' },
       container: { center: true, padding: '16px' },
       fontFamily: {
