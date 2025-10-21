@@ -1,21 +1,14 @@
 import clsx from 'clsx';
 import React from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  className: string;
+  className?: string;
 }
 
-export function Button({
-  children,
-  onClick,
-  disabled = false,
-  className,
-}: ButtonProps) {
+export function Button({ children, className, ...props }: ButtonProps) {
   return (
-    <button onClick={onClick} disabled={disabled} className={clsx(className)}>
+    <button className={clsx(className)} {...props}>
       {children}
     </button>
   );

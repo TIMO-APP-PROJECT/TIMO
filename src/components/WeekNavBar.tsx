@@ -3,20 +3,31 @@
 import { getWeekDays } from '@/lib/week-helpers';
 import clsx from 'clsx';
 import { addWeeks, format, isSameDay, subWeeks } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import { useState } from 'react';
 import { Button } from './Button';
 import { AnimatePresence, motion } from 'framer-motion';
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -300 : 300, // 나갈 때 위치
+    opacity: 0,
+  }),
+};
 
 function WeekNavBar() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [direction, setDirection] = useState<number>(0);
   const weekDays = getWeekDays(selectedDate);
 
-  console.log('weekDays', weekDays);
-
   const handleClick = (day: Date): void => {
-    console.log('day button clicked');
     setSelectedDate(day);
   };
 
@@ -28,21 +39,6 @@ function WeekNavBar() {
   const goToNextWeek = (): void => {
     setDirection(1);
     setSelectedDate(addWeeks(selectedDate, 1));
-  };
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -300 : 300, // 나갈 때 위치
-      opacity: 0,
-    }),
   };
 
   return (

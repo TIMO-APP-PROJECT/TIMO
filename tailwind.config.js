@@ -14,7 +14,15 @@ module.exports = {
       screens: { tab: '768px' },
       container: { center: true, padding: '16px' },
       fontFamily: {
-        sans: ['var(--font-inter-sans)'],
+        sans: [
+          'Pretendard Variable',
+          'Pretendard',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'system-ui',
+          'Roboto',
+          'sans-serif',
+        ],
         mono: ['var(--font-jetbrains-mono)'],
       },
     },

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import BottomNav from '@/components/BottomNav/BottomNav';
 
 const interSans = Inter({
   variable: '--font-inter-sans',
@@ -29,6 +30,7 @@ export default function RootLayout({
       >
         <div className="mx-auto w-full min-h-dvh max-w-app tab:max-w-tablet bg-white shadow-sm">
           {children}
+          <BottomNav />
         </div>
       </body>
     </html>
