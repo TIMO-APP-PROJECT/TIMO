@@ -1,6 +1,24 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* safe area */
+
+/* 상단 여백: 50px과 safe-area-top 중 더 큰 값 */
+.pt-safe-50 {
+  padding-top: max(50px, env(safe-area-inset-top));
+}
+
+/* 하단 여백: 56px + 홈바(safe-area-bottom) 높이 */
+.pb-safe-56 {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
 :root {
   --background: #ffffff;
@@ -19,5 +37,12 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    sans-serif;
 }
