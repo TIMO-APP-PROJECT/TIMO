@@ -16,6 +16,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.5",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
@@ -36,6 +37,7 @@
     "@storybook/nextjs": "^8.6.14",
     "@storybook/test": "^8.6.14",
     "@svgr/webpack": "^8.1.0",
+    "@tanstack/react-query-devtools": "^5.90.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",

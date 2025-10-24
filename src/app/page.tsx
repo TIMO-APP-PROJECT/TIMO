@@ -1,4 +1,3 @@
-import BottomNav from '@/components/BottomNav/BottomNav';
 import Headers from '@/components/Header/Headers';
 import YearPicker from '@/components/Header/YearPicker';
 import WeekNavBar from '@/components/WeekNavBar';
@@ -11,7 +10,6 @@ export default function Home() {
         <WeekNavBar />
       </div>
       <main className="w-full max-w-app flex flex-col gap-8 px-4 py-6"></main>
-      {/* <BottomNav /> */}
     </div>
   );
 }

@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
 /* safe area */
 
 /* 상단 여백: 50px과 safe-area-top 중 더 큰 값 */
