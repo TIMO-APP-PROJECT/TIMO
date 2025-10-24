@@ -1,19 +1,20 @@
 'use client';
 
+import Image from 'next/image';
+
 export default function ApiButton() {
   const sendApiRequest = () => {
-    fetch('/api/test')
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error('Error:', error));
+    window.location.href = '/api/auth/kakao';
   };
 
   return (
-    <button
-      className="bg-blue-500 text-white p-2 rounded-md cursor-pointer"
-      onClick={sendApiRequest}
-    >
-      send api request
+    <button className="cursor-pointer" onClick={sendApiRequest}>
+      <Image
+        src="/images/kakao_login_medium_narrow.png"
+        alt="카카오 로그인"
+        width={180}
+        height={45}
+      />
     </button>
   );
 }
