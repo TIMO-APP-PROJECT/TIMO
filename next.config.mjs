@@ -1,5 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.kakaocdn.net',
+      },
+      {
+        protocol: 'http',
+        hostname: 'k.kakaocdn.net',
+      },
+    ],
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

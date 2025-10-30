@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  KakaoTokenResponse,
-  KakaoUserInfo,
-  KakaoAuthResponse,
-} from '@/types/kakao';
+import { KakaoTokenResponse, KakaoUserInfo } from '@/types/kakao';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -91,22 +87,28 @@ export async function GET(request: NextRequest) {
     // 3. 사용자 정보 처리 (여기서는 간단히 반환)
     const userData = {
       id: userInfo.id,
-      nickname: userInfo.properties?.nickname,
-      profileImage: userInfo.properties?.profile_image,
-      email: userInfo.kakao_account?.email,
-      accessToken: tokenData.access_token,
     };
 
     // 실제 프로젝트에서는 여기서 데이터베이스에 사용자 정보를 저장하거나
     // JWT 토큰을 생성하여 세션을 관리할 수 있습니다.
 
-    const response: KakaoAuthResponse = {
-      success: true,
-      message: '카카오 로그인 성공',
-      user: userData,
+    // 개발 테스트용: 사용자 정보를 쿠키에 저장하고 /test-user로 리다이렉트
+    const testUserData = {
+      id: userData.id,
     };
 
-    return NextResponse.json(response);
+    const redirectResponse = NextResponse.redirect(
+      new URL('/test-user', request.url)
+    );
+
+    // 쿠키에 사용자 정보 저장 (1시간 유효)
+    redirectResponse.cookies.set('test_user', JSON.stringify(testUserData), {
+      httpOnly: false, // 클라이언트에서 접근 가능하도록
+      maxAge: 60 * 60, // 1시간
+      path: '/',
+    });
+
+    return redirectResponse;
   } catch (error) {
     console.error('카카오 로그인 처리 중 오류:', error);
     return NextResponse.json(
