@@ -2,13 +2,12 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID;
-  const REDIRECT_URI =
-    process.env.KAKAO_REDIRECT_URI ||
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/kakao/callback`;
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const REDIRECT_URI = `${BASE_URL}/api/auth/kakao/callback`;
 
-  if (!KAKAO_CLIENT_ID) {
+  if (!KAKAO_CLIENT_ID || !BASE_URL) {
     return NextResponse.json(
-      { error: '카카오 클라이언트 ID가 설정되지 않았습니다.' },
+      { error: '카카오 클라이언트 설정이 완료되지 않았습니다.' },
       { status: 500 }
     );
   }

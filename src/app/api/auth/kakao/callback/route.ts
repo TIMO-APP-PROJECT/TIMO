@@ -22,17 +22,10 @@ export async function GET(request: NextRequest) {
 
   const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID;
   const KAKAO_CLIENT_SECRET = process.env.KAKAO_CLIENT_SECRET;
-  const REDIRECT_URI =
-    process.env.KAKAO_REDIRECT_URI ||
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/kakao/callback`;
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const REDIRECT_URI = `${BASE_URL}/api/auth/kakao/callback`;
 
-  console.log('환경변수 확인:', {
-    hasClientId: !!KAKAO_CLIENT_ID,
-    hasClientSecret: !!KAKAO_CLIENT_SECRET,
-    redirectUri: REDIRECT_URI,
-  });
-
-  if (!KAKAO_CLIENT_ID || !KAKAO_CLIENT_SECRET) {
+  if (!KAKAO_CLIENT_ID || !KAKAO_CLIENT_SECRET || !BASE_URL) {
     return NextResponse.json(
       { error: '카카오 클라이언트 설정이 완료되지 않았습니다.' },
       { status: 500 }
@@ -67,6 +60,7 @@ export async function GET(request: NextRequest) {
     const tokenData: KakaoTokenResponse = await tokenResponse.json();
 
     // 2. 액세스 토큰으로 사용자 정보 요청
+    // 백엔드에서는 보안과 효율성을 이유로 여러가지 hook을 사용하는 것이 좋습니다.
     const userInfoResponse = await fetch('https://kapi.kakao.com/v2/user/me', {
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,
@@ -81,7 +75,6 @@ export async function GET(request: NextRequest) {
     }
 
     const userInfo: KakaoUserInfo = await userInfoResponse.json();
-
     console.log('카카오 사용자 정보:', JSON.stringify(userInfo, null, 2));
 
     // 3. 사용자 정보 처리 (여기서는 간단히 반환)
