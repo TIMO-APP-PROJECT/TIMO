@@ -4,9 +4,6 @@
 -- 1. Users 테이블
 CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,              -- 카카오 user id
-  email TEXT,
-  nickname TEXT,
-  profile_image TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -15,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS tags (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  emoji TEXT NOT NULL,              -- 🎯
+  emoji TEXT,              -- 🎯
   name TEXT NOT NULL,               -- "운동"
   color TEXT DEFAULT '#FF5733',    -- 색상 코드
   created_at TIMESTAMPTZ DEFAULT NOW(),

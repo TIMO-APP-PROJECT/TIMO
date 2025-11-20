@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { KakaoTokenResponse, KakaoUserInfo } from '@/types/kakao';
+import { supabase } from '@/lib/supabase';
+import { log } from 'console';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -75,19 +77,34 @@ export async function GET(request: NextRequest) {
     }
 
     const userInfo: KakaoUserInfo = await userInfoResponse.json();
-    console.log('카카오 사용자 정보:', JSON.stringify(userInfo, null, 2));
 
-    // 3. 사용자 정보 처리 (여기서는 간단히 반환)
-    const userData = {
-      id: userInfo.id,
-    };
+    console.log('userInfo', String(userInfo.id));
+    // 3. Supabase에 사용자 정보 저장 (upsert: 없으면 생성, 있으면 업데이트)
+    const { data: savedUser, error: dbError } = await supabase
+      .from('users')
+      .upsert(
+        {
+          id: String(userInfo.id),
+        },
+        {
+          onConflict: 'id',
+        }
+      )
+      .select();
 
-    // 실제 프로젝트에서는 여기서 데이터베이스에 사용자 정보를 저장하거나
-    // JWT 토큰을 생성하여 세션을 관리할 수 있습니다.
+    console.log('DB 응답 - savedUser:', savedUser, 'dbError:', dbError);
 
-    // 개발 테스트용: 사용자 정보를 쿠키에 저장하고 /test-user로 리다이렉트
+    if (dbError) {
+      console.error('DB 저장 실패:', dbError);
+      return NextResponse.json(
+        { error: '사용자 정보 저장에 실패했습니다.' },
+        { status: 500 }
+      );
+    }
+
+    // 4. 쿠키에 사용자 정보 저장하고 /test-user로 리다이렉트
     const testUserData = {
-      id: userData.id,
+      id: userInfo.id,
     };
 
     const redirectResponse = NextResponse.redirect(
