@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/src/lib/supabase';
-import { requireAuth } from '@/src/lib/auth';
+import { createClient } from '@/utils/supabase/server';
+import { requireAuth } from '@/lib/auth';
 
 // PATCH /api/tags/[id] - 태그 수정
 export async function PATCH(
@@ -8,7 +8,8 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const user = requireAuth(request);
+    const user = await requireAuth();
+    const supabase = await createClient();
     const { id } = params;
 
     // 1. 태그 소유권 확인
@@ -100,7 +101,8 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const user = requireAuth(request);
+    const user = await requireAuth();
+    const supabase = await createClient();
     const { id } = params;
 
     // 1. 태그 소유권 확인

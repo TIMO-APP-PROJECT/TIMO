@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/src/lib/supabase';
-import { requireAuth } from '@/src/lib/auth';
+import { createClient } from '@/utils/supabase/server';
+import { requireAuth } from '@/lib/auth';
 
 // GET /api/tags - 태그 목록 조회
 export async function GET(request: NextRequest) {
   try {
     // 1. 인증 확인
-    const user = requireAuth(request);
+    const user = await requireAuth();
+    const supabase = await createClient();
 
     // 2. 쿼리 파라미터
     const { searchParams } = new URL(request.url);
@@ -61,7 +62,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // 1. 인증 확인
-    const user = requireAuth(request);
+    const user = await requireAuth();
+    const supabase = await createClient();
 
     // 2. 요청 데이터 파싱
     const body = await request.json();

@@ -1,10 +1,33 @@
 'use client';
 
 import Image from 'next/image';
+import { createClient } from '@/utils/supabase/client';
+import { useState } from 'react';
 
 export default function LoginPage() {
-  const handleKakaoLogin = () => {
-    window.location.href = '/api/auth/kakao';
+  const [loading, setLoading] = useState(false);
+
+  const handleKakaoLogin = async () => {
+    try {
+      setLoading(true);
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'kakao',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=/test-user`,
+        },
+      });
+
+      if (error) {
+        console.error('로그인 실패:', error);
+        alert('로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      alert('로그인 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -16,7 +39,11 @@ export default function LoginPage() {
         <p className="text-gray-600 text-center mb-8">
           개발 테스트용 로그인 페이지입니다
         </p>
-        <button className="cursor-pointer" onClick={handleKakaoLogin}>
+        <button
+          className="cursor-pointer disabled:opacity-50"
+          onClick={handleKakaoLogin}
+          disabled={loading}
+        >
           <Image
             src="/images/kakao_login_medium_narrow.png"
             alt="카카오 로그인"
@@ -28,4 +55,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

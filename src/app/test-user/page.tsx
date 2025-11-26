@@ -2,38 +2,44 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-interface UserData {
-  id: number;
-}
+import { createClient } from '@/utils/supabase/client';
+import { User } from '@supabase/supabase-js';
 
 export default function TestUserPage() {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // 쿠키에서 사용자 정보 가져오기
-    const userCookie = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('test_user='));
+    const supabase = createClient();
 
-    if (userCookie) {
-      try {
-        const userDataStr = decodeURIComponent(userCookie.split('=')[1]);
-        const user = JSON.parse(userDataStr);
-        setUserData(user);
-      } catch (error) {
-        console.error('사용자 정보 파싱 실패:', error);
+    // Supabase 세션 확인
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        setUser(session.user);
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    checkSession();
+
+    // 세션 변경 감지
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const handleLogout = () => {
-    // 쿠키 삭제
-    document.cookie =
-      'test_user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
     router.push('/login');
   };
 
@@ -45,7 +51,7 @@ export default function TestUserPage() {
     );
   }
 
-  if (!userData) {
+  if (!user) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="bg-white p-8 rounded-lg shadow-md text-center">
@@ -73,8 +79,29 @@ export default function TestUserPage() {
         <div className="space-y-4 mb-6">
           <div className="border-b pb-3">
             <p className="text-sm text-gray-500 mb-1">사용자 ID</p>
-            <p className="text-xl font-bold text-gray-800">{userData.id}</p>
+            <p className="text-sm font-mono text-gray-800 break-all">
+              {user.id}
+            </p>
           </div>
+
+          <div className="border-b pb-3">
+            <p className="text-sm text-gray-500 mb-1">이메일</p>
+            <p className="text-lg text-gray-800">{user.email || '없음'}</p>
+          </div>
+
+          <div className="border-b pb-3">
+            <p className="text-sm text-gray-500 mb-1">제공자</p>
+            <p className="text-lg text-gray-800">
+              {user.app_metadata.provider || 'kakao'}
+            </p>
+          </div>
+
+          {user.user_metadata?.name && (
+            <div className="border-b pb-3">
+              <p className="text-sm text-gray-500 mb-1">닉네임</p>
+              <p className="text-lg text-gray-800">{user.user_metadata.name}</p>
+            </div>
+          )}
         </div>
 
         <button

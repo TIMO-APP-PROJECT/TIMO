@@ -1,22 +1,15 @@
-import { NextRequest } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
 
-export function getCurrentUser(request: NextRequest) {
-  const userCookie = request.cookies.get('test_user')?.value;
-
-  if (!userCookie) {
-    return null;
-  }
-
-  try {
-    const user = JSON.parse(userCookie);
-    return user;
-  } catch {
-    return null;
-  }
+export async function getCurrentUser() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
 }
 
-export function requireAuth(request: NextRequest) {
-  const user = getCurrentUser(request);
+export async function requireAuth() {
+  const user = await getCurrentUser();
 
   if (!user) {
     throw new Error('UNAUTHORIZED');
