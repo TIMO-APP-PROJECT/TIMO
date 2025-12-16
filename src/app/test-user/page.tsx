@@ -9,10 +9,9 @@ export default function TestUserPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const supabase = createClient();
 
   useEffect(() => {
-    const supabase = createClient();
-
     // Supabase 세션 확인
     const checkSession = async () => {
       const {
@@ -38,7 +37,6 @@ export default function TestUserPage() {
   }, []);
 
   const handleLogout = async () => {
-    const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/login');
   };
@@ -68,7 +66,6 @@ export default function TestUserPage() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
