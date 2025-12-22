@@ -2,19 +2,51 @@
 
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const isDev = process.env.NODE_ENV === 'development';
+  const supabase = createClient();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        router.replace('/');
+      }
+    };
+
+    checkUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        router.replace('/');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router, supabase]);
+
+  const handleDevLogin = () => {
+    setLoading(true);
+    router.push('/auth/callback?dev_user=true&next=/');
+  };
 
   const handleKakaoLogin = async () => {
     try {
       setLoading(true);
-      const supabase = createClient();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=/test-user`,
+          redirectTo: `${window.location.origin}/auth/callback?next=/`,
         },
       });
 
@@ -39,6 +71,17 @@ export default function LoginPage() {
         <p className="text-gray-600 text-center mb-8">
           개발 테스트용 로그인 페이지입니다
         </p>
+
+        {isDev && (
+          <button
+            className="w-full mb-4 px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 font-medium transition-colors"
+            onClick={handleDevLogin}
+            disabled={loading}
+          >
+            개발 모드 빠른 로그인
+          </button>
+        )}
+
         <button
           className="cursor-pointer disabled:opacity-50"
           onClick={handleKakaoLogin}
