@@ -2,8 +2,19 @@ import BottomNav from '@/components/BottomNav/BottomNav';
 import Headers from '@/components/Header/Headers';
 import YearPicker from '@/components/Header/YearPicker';
 import WeekNavBar from '@/components/WeekNavBar';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect('/login');
+  }
+
   return (
     <div className="font-sans items-center min-h-screen px-5 pb-20 gap-16">
       <div className="w-full pt-safe-50 ">
