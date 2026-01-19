@@ -21,7 +21,8 @@ export default async function Home() {
         <Headers right={<YearPicker />} />
         <WeekNavBar />
       </div>
-      <main className="w-full max-w-app flex flex-col gap-8 px-4 py-6"></main>
+      <main className="w-full max-w-app flex flex-col gap-8 px-4 py-6">
+      </main>
       {/* <BottomNav /> */}
     </div>
   );

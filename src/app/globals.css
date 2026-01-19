@@ -20,6 +20,12 @@
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* 좌우 safe area */
+.px-safe {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

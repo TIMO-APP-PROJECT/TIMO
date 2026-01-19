@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${interSans.variable} ${jetbrainsMono.variable} antialiased min-h-dvh bg-neutral-100 text-gray-900`} // 브라우저 화면 동적 높이, 바깥 회색 배경,  전체 텍스트 색상 기본 값
       >
-        <div className="mx-auto w-full min-h-dvh max-w-app tab:max-w-tablet bg-white shadow-sm">
+        <div className="mx-auto w-full min-h-dvh tab:max-w-tablet bg-white tab:shadow-sm">
           {children}
           <BottomNav />
         </div>
