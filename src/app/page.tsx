@@ -2,6 +2,7 @@ import BottomNav from '@/components/BottomNav/BottomNav';
 import Headers from '@/components/Header/Headers';
 import YearPicker from '@/components/Header/YearPicker';
 import WeekNavBar from '@/components/WeekNavBar';
+import PhotoList from '@/components/PhotoList';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -22,6 +23,7 @@ export default async function Home() {
         <WeekNavBar />
       </div>
       <main className="w-full max-w-app flex flex-col gap-8 px-4 py-6">
+        <PhotoList />
       </main>
       {/* <BottomNav /> */}
     </div>
